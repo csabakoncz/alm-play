@@ -1,27 +1,32 @@
 "use strict";
-var foo = 123;
-foo = 'Hello World'.length;
-function a(p) {
-    p.length;
-}
-console.log(foo);
-var p = document.createElement('h1');
-p.innerHTML = "TS - generated automatically!";
-document.body.appendChild(p);
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-var renderer = new THREE.WebGLRenderer();
+var aspect_ratio = window.innerWidth / window.innerHeight;
+var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+camera.position.z = 500;
+scene.add(camera);
+var renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-var geometry = new THREE.BoxGeometry(1, 1, 1);
-var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-var cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
-camera.position.z = 5;
-var render = function () {
-    requestAnimationFrame(render);
-    cube.rotation.x += 0.1;
-    cube.rotation.y += 0.1;
+var shape = new THREE.CubeGeometry(100, 100, 100);
+var cover = new THREE.MeshNormalMaterial();
+var box = new THREE.Mesh(shape, cover);
+scene.add(box);
+box.rotation.set(0.5, 0.5, 0.5);
+var t = THREE;
+var ball = new t.Mesh(new t.SphereGeometry(100, 20, 15), cover);
+scene.add(ball);
+ball.position.set(200, 0, 0);
+var clock = new t.Clock();
+var henger = new t.Mesh(new t.CylinderGeometry(20, 20, 100), cover);
+henger.position.set(-200, 0, 0);
+scene.add(henger);
+animate();
+renderer.render(scene, camera);
+function animate() {
+    requestAnimationFrame(animate);
+    var time = clock.getElapsedTime();
+    ball.rotation.set(time, time, 0);
+    box.rotation.set(time, time, 0);
+    henger.rotation.set(2 * time, 2 * time, 0);
     renderer.render(scene, camera);
-};
-render();
+}
