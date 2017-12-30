@@ -2,10 +2,22 @@ var tableC = document.getElementById('table')
 var whosTurnC = document.getElementById('whosTurn')
 var whiteScoreC = document.getElementById('whiteScore')
 var blackScoreC = document.getElementById('blackScore')
+var remainingMovesC = document.getElementById('remainingMoves')
 
 var table = []
+var N = 8
+//check the query string:
+var query = {}
+location.search.substr(1).split('&').forEach(function(p) {
+  var parts = p.split('=')
+  query[parts[0]]=parts[1]
+})
+if (query['N']) {
+  N = parseInt(query['N'])
+}
+console.log('Table dimension = ' + N)
 
-for (var i = 0; i < 8; i++){
+for (var i = 0; i < N; i++){
   var row = [];
   var rowC = document.createElement('div')
   rowC.classList.add('row')
@@ -13,7 +25,7 @@ for (var i = 0; i < 8; i++){
 
   table.push(row)
 
-  for (var j = 0; j < 8; j++){
+  for (var j = 0; j < N; j++){
     var div = document.createElement('div')
     div.classList.add('square')
     var stone = document.createElement('div')
@@ -33,19 +45,23 @@ var whosTurn;
 
 //put the two black stones:
 nextPlayer()
-toggle(table[3][3])
-toggle(table[4][4])
+var n21 = N / 2 - 1
+var n2 = N / 2
+
+toggle(table[n21][n21])
+toggle(table[n2][n2])
 
 //now the two whites
 nextPlayer()
-toggle(table[3][4])
-toggle(table[4][3])
+toggle(table[n21][n2])
+toggle(table[n2][n21])
 
 //now let the black begin:
 nextPlayer()
 
 var whites = 2;
 var blacks = 2;
+var remainingMoves = N*N - 4
 
 displayScore()
 
@@ -74,6 +90,7 @@ function createOnclick(square) {
 function displayScore() {
   whiteScoreC.innerText = 'White: ' + whites
   blackScoreC.innerText = 'Black: ' + blacks
+  remainingMovesC.innerText = 'Remaining moves: '+remainingMoves  
 }
 
 
@@ -88,7 +105,8 @@ function updateScore(captured: number) {
   opponent -= captured;
 
   blacks = isBlack ? currentPlayer : opponent
-  whites = isBlack? opponent: currentPlayer 
+  whites = isBlack ? opponent : currentPlayer 
+  remainingMoves--
 
 }
 
@@ -160,7 +178,7 @@ function toggle(square) {
 }
 
 function validPos(i: number) {
-  return i >= 0 && i < 8;
+  return i >= 0 && i < N;
 }
 
 

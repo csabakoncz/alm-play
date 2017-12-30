@@ -27,6 +27,13 @@
   background: white;
 }
 
+#remainingMoves {
+  font-size: 2em;
+  font-style: bold;
+  color: black;
+  background: lightgray;
+}
+
 [who=black] {
   background-color: black;
 }
