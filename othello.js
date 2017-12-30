@@ -1,6 +1,8 @@
 "use strict";
 var tableC = document.getElementById('table');
 var whosTurnC = document.getElementById('whosTurn');
+var whiteScoreC = document.getElementById('whiteScore');
+var blackScoreC = document.getElementById('blackScore');
 var table = [];
 for (var i = 0; i < 8; i++) {
     var row = [];
@@ -32,6 +34,7 @@ toggle(table[4][3]);
 nextPlayer();
 var whites = 2;
 var blacks = 2;
+displayScore();
 function nextTurn() {
     return whosTurn == black ? white : black;
 }
@@ -44,15 +47,32 @@ function createOnclick(square) {
     div.onclick = function () {
         if (validClick(square)) {
             toggle(square);
+            var captured = capture(square, false);
+            updateScore(captured);
+            displayScore();
             nextPlayer();
         }
     };
+}
+function displayScore() {
+    whiteScoreC.innerText = 'White: ' + whites;
+    blackScoreC.innerText = 'Black: ' + blacks;
+}
+function updateScore(captured) {
+    var isBlack = whosTurn == black;
+    var currentPlayer = isBlack ? blacks : whites;
+    var opponent = isBlack ? whites : blacks;
+    currentPlayer += 1;
+    currentPlayer += captured;
+    opponent -= captured;
+    blacks = isBlack ? currentPlayer : opponent;
+    whites = isBlack ? opponent : currentPlayer;
 }
 function validClick(square) {
     if (square.color) {
         return false;
     }
-    var captured = capture(square, false);
+    var captured = capture(square, true);
     return captured > 0;
 }
 function capture(fromSquare, dryRun) {

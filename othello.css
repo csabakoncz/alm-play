@@ -13,6 +13,20 @@
   height: 6em;
 }
 
+#whiteScore {
+  font-size: 2em;
+  font-style: bold;
+  color: white;
+  background: black;
+}
+
+#blackScore {
+  font-size: 2em;
+  font-style: bold;
+  color: black;
+  background: white;
+}
+
 [who=black] {
   background-color: black;
 }
