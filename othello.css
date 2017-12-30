@@ -6,6 +6,7 @@
 }
 
 #whosTurn{
+  box-sizing: border-box;
   border-style: solid;
   border-color: lightgray;
   border-width: 1em;
@@ -41,6 +42,11 @@
 [who=white] {
   background-color: white;
 }
+
+[validMove=true] {
+  background-color: lightgreen;
+}
+
 
 .row {
   display: flex;

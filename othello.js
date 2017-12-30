@@ -49,6 +49,7 @@ var whites = 2;
 var blacks = 2;
 var remainingMoves = N * N - 4;
 displayScore();
+showPossibleMoves();
 function nextTurn() {
     return whosTurn == black ? white : black;
 }
@@ -65,8 +66,24 @@ function createOnclick(square) {
             updateScore(captured);
             displayScore();
             nextPlayer();
+            showPossibleMoves();
         }
     };
+}
+function showPossibleMoves() {
+    var count = 0;
+    table.forEach(function (row) {
+        row.forEach(function (square) {
+            if (validClick(square)) {
+                count++;
+                square.div.setAttribute('validMove', 'true');
+            }
+            else {
+                square.div.setAttribute('validMove', 'false');
+            }
+        });
+    });
+    return count;
 }
 function displayScore() {
     whiteScoreC.innerText = 'White: ' + whites;

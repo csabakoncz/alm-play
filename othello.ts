@@ -33,7 +33,7 @@ for (var i = 0; i < N; i++){
     div.appendChild(stone)
 
     rowC.appendChild(div)
-    var square = { i: i, j: j, div: stone }; 
+    var square = { i: i, j: j, div: stone };
     createOnclick(square);
     row.push(square)
   }
@@ -64,6 +64,7 @@ var blacks = 2;
 var remainingMoves = N*N - 4
 
 displayScore()
+showPossibleMoves()
 
 function nextTurn() {
   return whosTurn == black ? white : black;
@@ -83,14 +84,32 @@ function createOnclick(square) {
       updateScore(captured)
       displayScore()
       nextPlayer()
+      showPossibleMoves()
     }
   }
+}
+
+function showPossibleMoves() {
+  var count = 0;
+  table.forEach(function(row) {
+    row.forEach(function(square) {
+
+      if (validClick(square)) {
+          count++;
+          square.div.setAttribute('validMove','true')
+        }
+      else {
+          square.div.setAttribute('validMove','false')
+        }
+    })
+  })
+  return count;
 }
 
 function displayScore() {
   whiteScoreC.innerText = 'White: ' + whites
   blackScoreC.innerText = 'Black: ' + blacks
-  remainingMovesC.innerText = 'Remaining moves: '+remainingMoves  
+  remainingMovesC.innerText = 'Remaining moves: '+remainingMoves
 }
 
 
@@ -105,7 +124,7 @@ function updateScore(captured: number) {
   opponent -= captured;
 
   blacks = isBlack ? currentPlayer : opponent
-  whites = isBlack ? opponent : currentPlayer 
+  whites = isBlack ? opponent : currentPlayer
   remainingMoves--
 
 }
