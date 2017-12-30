@@ -84,7 +84,17 @@ function createOnclick(square) {
       updateScore(captured)
       displayScore()
       nextPlayer()
-      showPossibleMoves()
+      var possibilities = showPossibleMoves()
+      if (possibilities == 0) {
+        //the other player can not move 
+        nextPlayer()
+        possibilities = showPossibleMoves()
+        if (possibilities == 0) {
+          gameEnd()
+        }
+      }
+
+      checkGameEnd()
     }
   }
 }
@@ -93,14 +103,11 @@ function showPossibleMoves() {
   var count = 0;
   table.forEach(function(row) {
     row.forEach(function(square) {
-
-      if (validClick(square)) {
+      var isValid = validClick(square) 
+      if (isValid) {
           count++;
-          square.div.setAttribute('validMove','true')
-        }
-      else {
-          square.div.setAttribute('validMove','false')
-        }
+      }
+      square.div.setAttribute('validMove',''+isValid)
     })
   })
   return count;
@@ -113,6 +120,22 @@ function displayScore() {
 }
 
 
+function gameEnd() {
+  var msg 
+  if (whites > blacks) {
+    msg = 'White won'
+  }
+  else if (blacks > whites) {
+    msg = 'Black won'
+  }
+  else {
+    msg = 'Draw' 
+  }
+  setTimeout(function() {
+    window.alert(msg)  
+  })
+  
+}
 
 function updateScore(captured: number) {
   var isBlack = whosTurn == black;
@@ -127,6 +150,12 @@ function updateScore(captured: number) {
   whites = isBlack ? opponent : currentPlayer
   remainingMoves--
 
+}
+
+function checkGameEnd() {
+  if (remainingMoves == 0) {
+    gameEnd()
+  }
 }
 
 function validClick(square) {
