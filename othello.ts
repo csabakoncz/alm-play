@@ -47,14 +47,13 @@ var whosTurn;
 nextPlayer()
 var n21 = N / 2 - 1
 var n2 = N / 2
-
-toggle(table[n21][n21])
-toggle(table[n2][n2])
+toggle(table[n21][n2])
+toggle(table[n2][n21])
 
 //now the two whites
 nextPlayer()
-toggle(table[n21][n2])
-toggle(table[n2][n21])
+toggle(table[n21][n21])
+toggle(table[n2][n2])
 
 //now let the black begin:
 nextPlayer()
