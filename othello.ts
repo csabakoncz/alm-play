@@ -228,4 +228,18 @@ function validPos(i: number) {
   return i >= 0 && i < N;
 }
 
+function replayGame(game: string) {
+  game = game.toUpperCase();
+
+  var columns = 'ABCDEFGH'
+  var move = 0
+  function next() {
+    var r = parseInt(game[move + 1]) - 1;
+    var c = columns.indexOf(game[move]);
+    var s: any = document.getElementsByClassName('row')[r].getElementsByClassName('stone')[c];
+    s.onclick();
+    move += 2;
+  }
+  return next; 
+}
 
